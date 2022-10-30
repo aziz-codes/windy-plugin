@@ -27,9 +27,10 @@ define("PLUGIN_URL",plugins_url()."/windy");
 //function to enqueue css file, but this plugin use 
 //tailwindcss for stylying, so no need to use
 function load_styles(){
-//enqueue script goes here
+wp_enqueue_style('my-css',PLUGIN_URL."/assets/css/style.css",'',time());
 }
 
+add_action('init','load_styles');
 //enqueue js files
 function load_scripts(){
     wp_enqueue_script("my-script",PLUGIN_URL."/assets/js/app.js",'',time());
@@ -69,7 +70,10 @@ function add_plugin_menu(){
 add_action("admin_menu","add_plugin_menu");
 
 function add_project_view(){
-    echo "This view will allows you to add new project";
+?>
+ <h2 class="text-red-500 font-bold">Hello World</h2>
+
+<?php
 }
 function view_projects(){
     echo "Lists all the projects";
