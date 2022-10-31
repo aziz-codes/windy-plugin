@@ -24,19 +24,26 @@ if(!defined("PLUGIN_URL"))
 define("PLUGIN_URL",plugins_url()."/windy");
 
 
-//function to enqueue css file, but this plugin use 
-//tailwindcss for stylying, so no need to use
 function load_styles(){
 wp_enqueue_style('my-css',PLUGIN_URL."/assets/css/style.css",'',time());
 }
 
 add_action('init','load_styles');
 //enqueue js files
+
 function load_scripts(){
+    wp_enqueue_script('jquery');
     wp_enqueue_script("my-script",PLUGIN_URL."/assets/js/app.js",'',time());
+    wp_enqueue_script("my-jquery",PLUGIN_URL."/assets/js/jQuery.min.js",'',time());
+
+    wp_localize_script("app.js","ajaxurl",admin_url("admin-ajax.php")); 
 }
 add_action("init","load_scripts");
 
+function load_media_files() {
+    wp_enqueue_media();
+}
+add_action( 'admin_enqueue_scripts', 'load_media_files' );
 
 // to add plugin option in wordpress dashboard
 
@@ -128,24 +135,24 @@ register_deactivation_hook(__FILE__,"drop_table");
 
 // add support for ajax to work.
 
-add_action('wp_ajax_project','project_handler');
+// add_action('wp_ajax_project','project_handler');
 
-function project_handler(){
-    global $wpdb;
+// function project_handler(){
+//     global $wpdb;
 
-    if($_REQUEST['params']=="save_project"){
-        $wpdb->insert(project_table(),array(
-            "title" => $_REQUEST['title'],
-            "token" => $_REQUEST['token'],
-            "url" => $_REQUEST['url'],
-            "date" => $_REQUEST['date'],
-            "photo" => $_REQUEST['photo'],
-            "tools" => $_REQUEST['tools'],
-            "description" => $_REQUEST['description']
-        ));
-        echo json_encode(array('status'=>1,"message"=>"Project Added "));
-    }
-}
+//     if($_REQUEST['params']=="save_project"){
+//         $wpdb->insert(project_table(),array(
+//             "title" => $_REQUEST['title'],
+//             "token" => $_REQUEST['token'],
+//             "url" => $_REQUEST['url'],
+//             "date" => $_REQUEST['date'],
+//             "photo" => $_REQUEST['photo'],
+//             "tools" => $_REQUEST['tools'],
+//             "description" => $_REQUEST['description']
+//         ));
+//         echo json_encode(array('status'=>1,"message"=>"Project Added "));
+//     }
+// }
 
 
 ?>
