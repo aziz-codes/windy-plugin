@@ -17,4 +17,23 @@ jQuery(document).ready(function () {
         jQuery("#image_name").val(getImage);
       });
   });
+
+  //function to save project
+
+  jQuery("#frmAddProject").validate({
+    submitHandler: function () {
+      var postData =
+        "action=project_library&params=save_project&" +
+        jQuery("#frmAddProject").serialize();
+      jQuery.post(ajaxurl, postData, function (response) {
+        var data = jQuery.parseJSON(response);
+        if (data.status == 1) {
+          alert("data saved");
+        } else {
+          console.log("error occured");
+        }
+      });
+      console.log(postData);
+    },
+  });
 });
